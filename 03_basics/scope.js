@@ -52,7 +52,7 @@ function addone(num){
 
 
 
-addTwo(5)
-const addTwo = function(num){
+console.log(addTwo(5))
+const addTwo = function(num){ // expression
     return num + 2
 }
