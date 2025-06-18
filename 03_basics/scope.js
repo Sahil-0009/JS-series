@@ -20,6 +20,7 @@ function one(){
     function two(){
         const website = "youtube"
         console.log(username);
+        // console.log(website);
     }
     // console.log(website);
 
@@ -44,7 +45,7 @@ if (true) {
 // ++++++++++++++++++ interesting ++++++++++++++++++
 
 
-console.log(addone(5))
+// console.log(addone(5))
 
 function addone(num){
     return num + 1
@@ -52,7 +53,8 @@ function addone(num){
 
 
 
-console.log(addTwo(5))
+
 const addTwo = function(num){ // expression
     return num + 2
 }
+console.log(addTwo(5))
