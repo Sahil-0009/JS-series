@@ -3,23 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GitHub User Card</title>
+    <style>
+        .card {
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 2px 2px 12px #eee;
+            padding: 16px;
+            margin: 40px auto;
+            text-align: center;
+        }
+        .card-img-top {
+            width: 100px;
+            border-radius: 50%;
+        }
+        .card-body {
+            margin-top: 16px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="card">
+        <img id="avatar" src="" class="card-img-top" alt="GitHub Avatar">
+        <div class="card-body">
+            <h3 id="username"></h3>
+            <p id="repos"></p>
+            <p id="commits"></p>
+        </div>
+    </div>
+    <script>
+        const username = 'Sahil-0009';
+        const userUrl = `https://api.github.com/users/${username}`;
+        const reposUrl = `https://api.github.com/users/${username}/repos`;
+
+        // Fetch user info
+        fetch(userUrl)
+            .then(res => res.json())
+            .then(user => {
+                document.getElementById('avatar').src = user.avatar_url;
+                document.getElementById('username').textContent = user.login;
+            });
+
+        // Fetch repos and commits
+        fetch(reposUrl)
+            .then(res => res.json())
+            .then(repos => {
+                document.getElementById('repos').textContent = `Public Repositories: ${repos.length}`;
+                if (repos.length > 0) {
+                    // Get commits from the first repo
+                    const firstRepo = repos[0].name;
+                    const commitsUrl = `https://api.github.com/repos/${username}/${firstRepo}/commits`;
+                    fetch(commitsUrl)
+                        .then(res => res.json())
+                        .then(commits => {
+                            document.getElementById('commits').textContent = `Commits in "${firstRepo}": ${commits.length}`;
+                        })
+                        .catch(() => {
+                            document.getElementById('commits').textContent = 'Commits: Unable to fetch';
+                        });
+                } else {
+                    document.getElementById('commits').textContent = 'Commits: No repositories found';
+                }
+            })
+            .catch(() => {
+                document.getElementById('repos').textContent = 'Repositories: Unable to fetch';
+                document.getElementById('commits').textContent = '';
+            });
+    </script>
 </body>
-<script>
-    const requestUrl = 'https://api.github.com/users/Sahil-0009'
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', requestUrl)
-    xhr.onreadystatechange = function(){
-        console.log(xhr.readyState);
-        if(xhr.readyState === 4){
-            const data = JSON.parse(this.responseText);
-            console.log(data.followers);
-        }
-    }
-    console.log('Here')
-    xhr.send()
-</script>
 </html>
